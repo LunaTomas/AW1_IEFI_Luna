@@ -31,3 +31,36 @@ jobs:
 
       - name: Ejecutar pruebas unitarias
         run: node --test
+
+  deploy:
+    name: Despliegue en Vercel
+    needs: testing
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - name: Obtener código del repositorio
+        uses: actions/checkout@v6
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Instalar Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Obtener configuración de Vercel
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Preparar proyecto
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Desplegar a producción
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
