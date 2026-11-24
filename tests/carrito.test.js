@@ -8,13 +8,13 @@ import {
 
 // TESTS DE CALCULAR ENVÍO
 
-// test("El envío a Córdoba cuesta $3500", () => {
-//     assert.equal(calcularEnvio("cordoba", 50000), 3500);
-// });
-
 test("El envío a Córdoba cuesta $3500", () => {
-    assert.equal(calcularEnvio("cordoba", 50000), 9999);
+    assert.equal(calcularEnvio("cordoba", 50000), 3500);
 });
+
+// test("El envío a Córdoba cuesta $3500", () => {
+//     assert.equal(calcularEnvio("cordoba", 50000), 9999);
+// });
 
 test("El envío a Buenos Aires cuesta $5500", () => {
     assert.equal(calcularEnvio("buenos-aires", 50000), 5500);
